@@ -25,7 +25,7 @@ tested on an HP-UX system.  YMMV depending on system configuration, etc.:
     DEF VAR objEmail        AS Email              NO-UNDO.
     DEF VAR objSendEmailAlg AS SendEmailAlgorithm NO-UNDO.
 
-    objSendEmailAlg = NEW SendEmailUnix()
+    objSendEmailAlg = NEW SendEmailUnix().
     objEmail        = NEW Email(objSendEmailAlg).
 
     objEmail:addToRecipient("some_email@address.com").
