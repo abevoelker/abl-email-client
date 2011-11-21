@@ -10,7 +10,7 @@ albeit without the rat's nest of procedural code.
 I can't guarantee this works as I no longer have an ABL development
 environment to test it with.  I'm fairly certain that the Unix
 algorithm works, at least (assuming you have the `mail` command available).
-I had started to work on a actual socket-level SMTP client implementation,
+I had started to work on an actual socket-level SMTP client implementation,
 but didn't get a chance to finish it (the relevant in-progress files are
 `SendEmailSocket.cls` and `SocketReader.p`).  I had also considered writing
 a Windows-specific algorithm, possibly wrapping the command-line `bmail`
@@ -22,11 +22,11 @@ tested on an HP-UX system.  YMMV depending on system configuration, etc.:
 
     USING com.abevoelker.email.*.
 
-    DEFINE VARIABLE objEmail        AS Email              NO-UNDO.
-    DEFINE VARIABLE objSendEmailAlg AS SendEmailAlgorithm NO-UNDO.
+    DEF VAR objEmail        AS Email              NO-UNDO.
+    DEF VAR objSendEmailAlg AS SendEmailAlgorithm NO-UNDO.
 
-    ASSIGN objSendEmailAlg = NEW SendEmailUnix()
-           objEmail        = NEW Email(objSendEmailAlg).
+    objSendEmailAlg = NEW SendEmailUnix()
+    objEmail        = NEW Email(objSendEmailAlg).
 
     objEmail:addToRecipient("some_email@address.com").
     objEmail:setBodyText("This is the body.").
@@ -35,5 +35,9 @@ tested on an HP-UX system.  YMMV depending on system configuration, etc.:
     objEmail:send().
 
 The socket algorithm example would look the same as above, except replacing
-the algorithm to use SendEmailSocket, passing in an SMTP server address:
+the algorithm to use `SendEmailSocket`, passing in an SMTP server address:
+
     objSendEmailAlg = NEW SendEmailSocket("some.smtpserver.com").
+
+The ability to switch out different algorithms in this manner is called
+the [Strategy Pattern](http://en.wikipedia.org/wiki/Strategy_pattern).
