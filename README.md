@@ -39,5 +39,6 @@ the algorithm to use `SendEmailSocket`, passing in an SMTP server address:
 
     objSendEmailAlg = NEW SendEmailSocket("some.smtpserver.com").
 
-The ability to switch out different algorithms in this manner is called
-the [Strategy Pattern](http://en.wikipedia.org/wiki/Strategy_pattern).
+The ability to switch out different algorithms in this manner is one of the
+original <abbr title="Gang of Four">GoF</abbr> design patterns called the
+[strategy pattern](http://en.wikipedia.org/wiki/Strategy_pattern).
