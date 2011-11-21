@@ -39,10 +39,8 @@ CLASS EmailClient.SendEmailUnix IMPLEMENTS EmailClient.SendEmailAlgorithm USE-WI
         IF OPSYS NE "UNIX" THEN
             RETURN "You cannot use the Unix send email algorithm on " + OPSYS + " operating systems!".
         COPY-LOB FROM OBJECT ipobjEmail:getPayload() TO FILE cTempFile.
-        OUTPUT TO VALUE("junk.txt").
-          PUT UNFORMATTED "echo ~"" + SanitizeInput(ipobjEmail:getHeaders()) + "\n`cat payload.txt`~" | mail " + SanitizeInput(ipobjEmail:getRecipients()).
-        OUTPUT CLOSE.
-        UNIX SILENT VALUE("echo ~"" + SanitizeInput(ipobjEmail:getHeaders()) + "\n`cat payload.txt`~" | mail " + SanitizeInput(ipobjEmail:getRecipients())).
+        UNIX SILENT VALUE("echo ~"" + SanitizeInput(ipobjEmail:getHeaders()) + "\n`cat " + cTempFile +
+          "`~" | mail " + SanitizeInput(ipobjEmail:getRecipients())).
     END METHOD.
 
     /* Function to clean non-escaped characters out of input (prevent injection attacks) */
