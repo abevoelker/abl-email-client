@@ -13,11 +13,11 @@
 
 USING Progress.Lang.*.
 
-INTERFACE EmailClient.SendEmailAlgorithm:
+INTERFACE email.SendEmailAlgorithm:
 
     /* Returns: */
     /* SUCCESS = empty return string */
     /* FAILURE = error message in return string */
-    METHOD PUBLIC CHARACTER sendEmail(INPUT ipobjEmail AS EmailClient.Email).
+    METHOD PUBLIC CHARACTER sendEmail(INPUT ipobjEmail AS email.Email).
 
 END INTERFACE.

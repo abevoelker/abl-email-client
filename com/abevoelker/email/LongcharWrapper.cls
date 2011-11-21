@@ -10,7 +10,7 @@
 
 USING Progress.Lang.*.
 
-CLASS EmailClient.LongcharWrapper USE-WIDGET-POOL:
+CLASS email.LongcharWrapper USE-WIDGET-POOL:
 
     DEFINE PRIVATE VARIABLE lc AS LONGCHAR NO-UNDO.
 

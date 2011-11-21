@@ -11,7 +11,7 @@
 USING Progress.Lang.*.
 
 
-CLASS EmailClient.Util USE-WIDGET-POOL FINAL:
+CLASS email.Util USE-WIDGET-POOL FINAL:
 
     DEFINE PRIVATE STATIC VARIABLE cMonthMap AS CHARACTER EXTENT 12 INITIAL
       ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"].

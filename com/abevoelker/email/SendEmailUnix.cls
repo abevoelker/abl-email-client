@@ -10,7 +10,7 @@
 
 USING Progress.Lang.*.
 
-CLASS EmailClient.SendEmailUnix IMPLEMENTS EmailClient.SendEmailAlgorithm USE-WIDGET-POOL:
+CLASS email.SendEmailUnix IMPLEMENTS EmailClient.SendEmailAlgorithm USE-WIDGET-POOL:
 
 
     DEFINE PRIVATE VARIABLE cTempFile AS CHARACTER NO-UNDO. /* Temporary file that holds message payload */
@@ -35,7 +35,7 @@ CLASS EmailClient.SendEmailUnix IMPLEMENTS EmailClient.SendEmailAlgorithm USE-WI
         OS-DELETE VALUE(cTempFile).
     END DESTRUCTOR.
 
-    METHOD PUBLIC CHARACTER sendEmail(INPUT ipobjEmail AS EmailClient.Email):
+    METHOD PUBLIC CHARACTER sendEmail(INPUT ipobjEmail AS email.Email):
         IF OPSYS NE "UNIX" THEN
             RETURN "You cannot use the Unix send email algorithm on " + OPSYS + " operating systems!".
         COPY-LOB FROM OBJECT ipobjEmail:getPayload() TO FILE cTempFile.

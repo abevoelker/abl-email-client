@@ -13,7 +13,7 @@ USING Progress.Lang.*.
 
 
 
-CLASS EmailClient.Memptr USE-WIDGET-POOL:
+CLASS email.Memptr USE-WIDGET-POOL:
 
     DEFINE PRIVATE VARIABLE mptr AS MEMPTR NO-UNDO.
 

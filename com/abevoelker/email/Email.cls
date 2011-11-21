@@ -14,7 +14,7 @@
 USING Progress.Lang.*.
 
 
-CLASS EmailClient.Email  USE-WIDGET-POOL:
+CLASS email.Email  USE-WIDGET-POOL:
 
     &SCOPED-DEFINE QUOTES                """"
     &SCOPED-DEFINE CR                    CHR(13)
@@ -26,7 +26,7 @@ CLASS EmailClient.Email  USE-WIDGET-POOL:
             Notes:
     ------------------------------------------------------------------------------*/
 
-    DEFINE PRIVATE VARIABLE objSendEmailAlgorithm AS EmailClient.SendEmailAlgorithm NO-UNDO.
+    DEFINE PRIVATE VARIABLE objSendEmailAlgorithm AS email.SendEmailAlgorithm NO-UNDO.
 
     DEFINE PRIVATE TEMP-TABLE ttSenders NO-UNDO
       FIELD cEmailAddress AS CHARACTER
@@ -84,7 +84,7 @@ CLASS EmailClient.Email  USE-WIDGET-POOL:
 
     /* Other email headers: */
 
-    CONSTRUCTOR PUBLIC Email (INPUT ipobjSendEmailAlgorithm AS EmailClient.SendEmailAlgorithm):
+    CONSTRUCTOR PUBLIC Email (INPUT ipobjSendEmailAlgorithm AS email.SendEmailAlgorithm):
         SUPER ().
         ASSIGN objSendEmailAlgorithm = ipobjSendEmailAlgorithm
                cMimeBoundary         = {&DEFAULT_MIME_BOUNDARY}
@@ -280,7 +280,7 @@ CLASS EmailClient.Email  USE-WIDGET-POOL:
     END METHOD.
 
     /* If send email algorithm not set in constructor, you must set it using this method before the email can be sent */
-    METHOD PUBLIC VOID setSendEmailAlgorithm(INPUT ipobjSendEmailAlgorithm AS EmailClient.SendEmailAlgorithm):
+    METHOD PUBLIC VOID setSendEmailAlgorithm(INPUT ipobjSendEmailAlgorithm AS email.SendEmailAlgorithm):
         ASSIGN objSendEmailAlgorithm = ipobjSendEmailAlgorithm.
     END METHOD.
 
@@ -324,7 +324,7 @@ CLASS EmailClient.Email  USE-WIDGET-POOL:
             RETURN "Error copying from file: " + ERROR-STATUS:GET-MESSAGE(1).
         CREATE ttAttachments.
         ASSIGN ttAttachments.cFileName     = ipcFileName
-               ttAttachments.lcData        = NEW EmailClient.LongcharWrapper(lcTemp)
+               ttAttachments.lcData        = NEW email.LongcharWrapper(lcTemp)
                ttAttachments.lBase64Encode = FALSE.
         RETURN "". /* Success */
     END.
@@ -343,7 +343,7 @@ CLASS EmailClient.Email  USE-WIDGET-POOL:
             RETURN "Error copying from file: " + ERROR-STATUS:GET-MESSAGE(1).
         CREATE ttAttachments.
         ASSIGN ttAttachments.cFileName     = ipcFileName
-               ttAttachments.lcData        = NEW EmailClient.LongcharWrapper(EmailClient.Util:ConvertDataToBase64(lcTemp))
+               ttAttachments.lcData        = NEW email.LongcharWrapper(EmailClient.Util:ConvertDataToBase64(lcTemp))
                ttAttachments.lBase64Encode = TRUE.
         RETURN "". /* Success */
     END.
@@ -507,12 +507,12 @@ CLASS EmailClient.Email  USE-WIDGET-POOL:
             ASSIGN cReturnData = cReturnData + "\n" + {&QUOTES} + "Priority:" + cPriority + {&QUOTES}.
         /* Write the "Date" (sent date) header */
         IF dttmtzSentDate NE ? THEN
-            ASSIGN cReturnData = cReturnData + "\n" + {&QUOTES} + "Date:" + EmailClient.Util:ABLDateTimeToEmail(dttmtzSentDate) + {&QUOTES}.
+            ASSIGN cReturnData = cReturnData + "\n" + {&QUOTES} + "Date:" + email.Util:ABLDateTimeToEmail(dttmtzSentDate) + {&QUOTES}.
         IF dttmtzReplyByDate NE ? THEN
-            ASSIGN cReturnData = cReturnData + "\n" + {&QUOTES} + "Reply-By:" + EmailClient.Util:ABLDateTimeToEmail(dttmtzReplyByDate) + {&QUOTES}.
+            ASSIGN cReturnData = cReturnData + "\n" + {&QUOTES} + "Reply-By:" + email.Util:ABLDateTimeToEmail(dttmtzReplyByDate) + {&QUOTES}.
         /* Write the "Expiry-Date" header */
         IF dttmtzExpireDate NE ? THEN
-            ASSIGN cReturnData = cReturnData + "\n" + {&QUOTES} + "Expiry-Date:" + EmailClient.Util:ABLDateTimeToEmail(dttmtzExpireDate) + {&QUOTES}.
+            ASSIGN cReturnData = cReturnData + "\n" + {&QUOTES} + "Expiry-Date:" + email.Util:ABLDateTimeToEmail(dttmtzExpireDate) + {&QUOTES}.
         RETURN cReturnData.
     END METHOD.
 
@@ -535,7 +535,7 @@ CLASS EmailClient.Email  USE-WIDGET-POOL:
             IF lBodyIsBase64 THEN DO:
                 ASSIGN lcReturnData = lcReturnData + "Content-Transfer-Encoding: base64" + cNewLine +
                                       cNewLine +
-                                      EmailClient.Util:ConvertDataToBase64(lcBody) + cNewLine.
+                                      email.Util:ConvertDataToBase64(lcBody) + cNewLine.
             END.
             ELSE DO:
                 ASSIGN lcReturnData = lcReturnData + "Content-Transfer-Encoding: 7bit"   + cNewLine +
@@ -551,13 +551,13 @@ CLASS EmailClient.Email  USE-WIDGET-POOL:
                 ASSIGN lcReturnData = lcReturnData + "Content-Type: application/octet-stream" + cNewLine +
                                       "Content-Disposition: attachment; filename=~"" + ttAttachments.cFileName + "~"" + cNewLine +
                                       "Content-Transfer-Encoding: base64" + cNewLine + cNewLine +
-                                      CAST(ttAttachments.lcData, EmailClient.LongcharWrapper):getLongchar() + cNewLine.
+                                      CAST(ttAttachments.lcData, email.LongcharWrapper):getLongchar() + cNewLine.
             END.
             ELSE DO:
                 ASSIGN lcReturnData = lcReturnData + "Content-Type: text/plain; charset=~"us-ascii~"" + cNewLine +
                                       "Content-Disposition: attachment; filename=~"" + ttAttachments.cFileName + "~"" + cNewLine +
                                       "Content-Transfer-Encoding: 7bit" + cNewLine + cNewLine +
-                                      CAST(ttAttachments.lcData, EmailClient.LongcharWrapper):getLongchar() + cNewLine.
+                                      CAST(ttAttachments.lcData, email.LongcharWrapper):getLongchar() + cNewLine.
             END.
         END.
 
