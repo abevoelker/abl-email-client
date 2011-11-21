@@ -10,10 +10,11 @@ albeit without the rat's nest of procedural code.
 I can't guarantee this works as I no longer have an ABL development
 environment to test it with.  I'm fairly certain that the Unix
 algorithm works, at least (assuming you have the `mail` command available).
-I had started to work on a actual socket-level SMTP client
-implementation, but didn't get a chance to finish it.  I had also considered
-writing a Windows-specific algorithm possibly wrapping the command-line
-`bmail` utility, but also didn't get around to that.
+I had started to work on a actual socket-level SMTP client implementation,
+but didn't get a chance to finish it (the relevant in-progress files are
+`SendEmailSocket.cls` and `SocketReader.p`).  I had also considered writing
+a Windows-specific algorithm, possibly wrapping the command-line `bmail`
+utility, but didn't get around to that, either.
 
 ## Example
 Here's some example code for using the Unix algorithm, which I believe was
@@ -33,3 +34,6 @@ tested on an HP-UX system.  YMMV depending on system configuration, etc.:
 
     objEmail:send().
 
+The socket algorithm example would look the same as above, except replacing
+the algorithm to use SendEmailSocket, passing in an SMTP server address:
+    objSendEmailAlg = NEW SendEmailSocket("some.smtpserver.com").
